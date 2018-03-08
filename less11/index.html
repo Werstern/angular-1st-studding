@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html ng-app="myFirstApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Lesson 11</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body ng-controller="myFirstController">
+    <script>
+        var app = angular.module("myFirstApp", []);
+
+        app.controller('myFirstController', function($scope) {
+            $scope.user = {
+                name: "Tony",
+                age: 35,
+                city: "Los-Angeles"
+            };
+
+            $scope.students = [
+                {name: "Nick", course: "React"},
+                {name: "Slide", course: "Ember"},
+                {name: "Ann", course: "Angular"},
+                {name: "Kate", course: "Angular2"},
+                {name: "Mike", course: "NodeJs"},
+                {name: "Elizabeth", course: "Angular4"},
+                {name: "Michael", course: "jQuery"},
+                {name: "Tony", course: "JavaScript"},
+                {name: "Daniela", course: "VueJs"},
+                {name: "Adrian", course: "Blackbone"}
+            ];
+
+            $scope.showKnow = function() {
+                $scope.knowledge = ["HyperText Markup Language", "Cascading Style Sheets", "Semantically Awesome Style Sheets", "JavaScript", "Jquery"];
+            }
+
+            $scope.showCan = function() {
+                $scope.skills = ["Website development", "Front-end development", "Learning"];
+            }
+
+            $scope.showFirstDiv = false;
+            $scope.showSecondDiv = false;
+            $scope.showThirdDiv = true;
+
+            $scope.clickedFirst = function() {
+                $scope.showFirstDiv = true;
+            }
+
+            $scope.clickedSecond = function() {
+                $scope.showSecondDiv = true;
+            }
+
+            $scope.clickedThird = function() {
+                $scope.showThirdDiv = false;
+            }
+
+        });
+    </script>
+
+    <div>
+        <p>Users name is {{user.name}}.</p>
+        <p>{{user.name}} is <span ng-bind="user.age"></span> years old.</p>
+        <p ng-bind-template="User name is {{user.name}}, he is {{user.age}} and he is from {{user.city}}"></p>
+    </div>
+
+    <div>
+        <h3>Students list</h3>
+        <ol>
+            <li ng-repeat="student in students">
+                {{student.name}}
+                    <span ng-if="$first">*</span>
+            </li>
+        </ol>
+
+        <h3>Table of students and courses</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>Course</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr ng-repeat="student in students" ng-class="$even ? 'blue' : 'grey'">
+                    <td>{{$index + 1}}</td>
+                    <td>
+                        {{student.name}}
+                        <span ng-if="$first">*</span>
+                    </td>
+                    <td>{{student.course}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <button ng-click="showKnow()">
+            Show knowledge
+        </button>
+        <button ng-click="showCan()">
+            Show skills
+        </button>
+
+        <ul>
+            <li ng-repeat="subject in knowledge">
+                <h4 ng-if="$first">My knowledge</h4>
+                {{subject}}
+            </li>
+        </ul>
+
+        <ul>
+            <li ng-repeat="skill in skills">
+                <h4 ng-if="$first">My skills</h4>
+                {{skill}}
+            </li>
+        </ul>
+    </div>
+
+    <div>
+        <button ng-click="clickedFirst()">
+            Show 1st block
+        </button>
+        <button ng-click="clickedSecond()">
+            Show 2nd block
+        </button>
+        <button ng-click="clickedThird()">
+            Show 3rd block
+        </button>
+    </div>
+    <div id="showByIf" ng-if="showFirstDiv"></div>
+    <div id="showByShow" ng-show="showSecondDiv"></div>
+    <div id="showByHide" ng-hide="showThirdDiv"></div>
+
+</body>
+</html>

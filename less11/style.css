@@ -1,0 +1,43 @@
+.blue {
+	background-color: lightblue;
+}
+
+.grey {
+	background-color: lightgrey;
+}
+
+.firstEl {
+	background-color: aqua;
+}
+
+ul {
+	list-style-type: none;
+}
+
+button {
+	margin-top: 10px;
+}
+
+#showByIf{
+	width:200px;
+	height:200px;
+    background-color: #5bc0de;
+	float:left;
+	margin-right: 20px;
+}
+
+#showByShow{
+	width:200px;
+	height:200px;
+	background-color: #5cb85c;
+	float:left;
+	margin-right: 20px;
+}
+
+#showByHide{
+	width:200px;
+	height:200px;
+	background-color: green;
+	float:left;
+	margin-right: 20px;
+}
