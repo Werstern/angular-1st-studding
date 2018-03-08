@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html ng-app="studingApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Lesson12</title>
+    <script src="scripts/angular.min.js"></script>
+    <style>
+        .backgroundColor {
+            background-color: lightgreen;
+        }
+
+        .border {
+            border: 1px solid black;
+        }
+
+        .fontSize {
+            font-size: 18px;
+        }
+
+        .color {
+            color: black;
+        }
+
+        .size {
+            width: 200px;
+            height: 200px;
+        }
+
+        .active {
+            background-color: lightblue;
+        }
+
+        form .ng-invalid-required.ng-dirty {
+            background-color: lightpink;
+        }
+
+        form .ng-invalid-email.ng-dirty {
+            background-color: lightgoldenrodyellow;
+        }
+
+        form .ng-valid.ng-dirty {
+            background-color: lightgreen;
+        }
+
+        span.summary.ng-invalid {
+            color: red;
+            font-weight: bold;
+        }
+
+        span.summary.ng-valid {
+            color: green;
+        }
+
+        div.error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        const app = angular.module("studingApp", []);
+        app.controller("studingController", function($scope) {
+            $scope.classNames = ['backgroundColor', 'border', 'fontSize', 'color', 'size'];
+
+            $scope.styleObj = {
+                color: "black",
+                margin: "10px",
+                border: "1px solid black",
+                width: "200px",
+                height: "200px",
+                fontSize: "18px",
+                backgroundColor: "lightgreen"
+            };
+
+            $scope.changeBground = function() {
+                $scope.btnClassName = "active"
+            };
+        });
+
+        app.controller("thirdTaskController", function($scope) {
+            $scope.btnStatus = false;
+
+            $scope.disabledFunction = function() {
+                $scope.btnStatus = !$scope.btnStatus;
+            }
+        });
+
+        app.controller("fourthTaskController", function($scope) {
+            $scope.addNewUser = function(userDetails) {
+                $scope.message = userDetails.name
+                    + " (" + userDetails.email + ") (" + userDetails.agreed + ")";
+            }
+
+            $scope.message = "Ready";
+        });
+
+        app.controller("fifthTaskController", function($scope) {
+            $scope.dataInfos = [
+                {name: "Tony", dataBirthday: "1995-12-17"},
+                {name: "Michael", dataBirthday: "1991-05-01"},
+                {name: "Tina", dataBirthday: "2001-10-07"},
+                {name: "Katy", dataBirthday: "1987-09-27"},
+                {name: "Elizabeth", dataBirthday: "2000-03-12"}
+            ];
+
+            $scope.getDateBirthday = function (data) {
+                return new Date(data);
+            }
+        });
+
+        app.controller("sixthTaskController", function($scope) {
+            $scope.dataInfos = [
+                {name: "Tony", dataBirthday: "1995-12-17"},
+                {name: "Michael", dataBirthday: "1991-05-01"},
+                {name: "Tina", dataBirthday: "2001-10-07"},
+                {name: "Katy", dataBirthday: "1987-09-27"},
+                {name: "Elizabeth", dataBirthday: "2000-03-12"}
+            ];
+
+            $scope.getDateBirthday = function (data) {
+                return new Date(data);
+            }
+
+        });
+
+        app.controller("seventhTaskController", function($scope, $rootScope) {
+
+            $scope.send = function() {
+                $rootScope.$broadcast("messageEvent", {
+                    message: $scope.messageInput
+                });
+            }
+
+            $scope.$on("messageEvent", function(event, args) {
+                $scope.info = args.message;
+            });
+        });
+
+    </script>
+
+    <div ng-controller="studingController">
+        <div ng-class="classNames">Test</div>
+        <div ng-style="styleObj">Test2</div>
+        <button ng-click="changeBground()" ng-class="btnClassName">Change backgroundColor</button>
+    </div>
+
+    <div ng-controller="thirdTaskController">
+        <button ng-click="disabledFunction()">Click me</button>
+        <input type="text" ng-disabled="btnStatus">
+        <input type="text" ng-disabled="btnStatus">
+        <input type="checkbox" ng-disabled="btnStatus">
+        <input type="checkbox" ng-disabled="btnStatus">
+    </div>
+    <hr>
+    <div ng-controller="fourthTaskController">
+        <form name="checkouter" novalidate ng-submit="addNewUser(newUser)">
+            <label>Name:</label>
+            <input name="userName" type="text" required ng-model="newUser.name" ng-minlength="4">
+            <div class="error" ng-show="checkouter.userName.$dirty">
+                <span ng-show="checkouter.userName.$error.minlength">
+                    Имя должно содержать не менее четырех символов
+                </span>
+            </div>
+            <br>
+            <label>Email:</label>
+            <input name="userEmail" type="email" required ng-model="newUser.email" ng-minlength="4">
+            <br>
+            <div class="error" ng-show="checkouter.userEmail.$invalid && checkouter.userEmail.$dirty">
+                <span ng-show="checkouter.userEmail.$error.email">
+                    Введите правильный email
+                </span>
+                <span ng-show="checkouter.userEmail.$error.required">
+                    Поле не должно быть пустым
+                </span>
+                <span ng-show="checkouter.userEmail.$error.minlength"><br>
+                    Email должно содержать не менее четырех символов
+                </span>
+            </div>
+
+            <br>
+            <label>
+                <input name="agreed" type="checkbox" ng-model="newUser.agreed" required>
+                Согласен с условиями использования
+            </label>
+            <br>
+            <button type="submit" ng-disabled="checkouter.$invalid">
+                OK
+            </button>
+            <br>
+            <div class="well">
+                Message: {{message}}
+                <div>
+                    Valid:
+                    <span class="summary" ng-class="checkouter.$valid ? 'ng-valid' : 'ng-invalid'">
+                        {{checkouter.$valid}}
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div ng-controller="fifthTaskController">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Birthday date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="dataInfo in dataInfos">
+                    <td>{{dataInfo.name | lowercase}}</td>
+                    <!-- Форматирование даты и времени -->
+                    <td>{{getDateBirthday(dataInfo.dataBirthday) | date : "dd MMM yyyy"}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div ng-controller="sixthTaskController">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Birthday date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="dataInfo in dataInfos">
+                    <td>{{dataInfo.name | lowercase}}</td>
+                    <!-- Форматирование даты и времени -->
+                    <td>{{getDateBirthday(dataInfo.dataBirthday) | date : "dd MMM yyyy'year'"}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <br>
+    <div ng-controller="seventhTaskController">
+        <form name="formChecker" novalidate ng-submit="send()">
+            <input type="text" required name="inputInfo" ng-model="messageInput">
+            <button type="submit" ng-disabled="formChecker.$invalid">
+                Send
+            </button>
+        </form>
+    </div>
+    <div ng-controller="seventhTaskController">
+        {{info}}
+    </div>
+    <div ng-controller="seventhTaskController">
+        {{info}}
+    </div>
+</body>
+</html>
